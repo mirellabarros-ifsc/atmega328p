@@ -1,0 +1,25 @@
+
+.EQU const = 22
+
+start:
+;    add r16, r17 ; soma o r17 com o r16
+;    ldi r17, const ; soma a constante com o r17
+;    add r16, r17 ; soma o r17 com o r16
+;    mov r18, r16 
+    
+    add r16, r17 ; soma o r17 com o r16
+    ldi r18, const ; soma a constante com o r17
+    add r18, r16 ; soma o r17 com o r16
+    
+    add r16, r17
+    subi r16, -const
+    mov r18, r16
+    
+    rjmp start
+
+    ; execício
+    ldi r16, 25
+    subi r16, -14
+    subi r16, -0x32
+    mov r0, r16
+    rjmp start
