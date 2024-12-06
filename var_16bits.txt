@@ -1,0 +1,19 @@
+.INCLUDE <m328Pdef.inc>
+
+.DSEG ; Segmento da Mem´oria RAM (dados)
+    
+.ORG SRAM_START ; 0x0100 para o ATmega328p
+    
+uint:	.BYTE 2 ; aloca 2 bytes a partir do r´otulo var2.
+; var2 ´e o r´otulo do endere¸co (0x0101)
+; do PRIMEIRO byte alocado.
+; O endere¸co do segundo byte ´e var2+1 (0x0103)
+
+start:
+    lds r24, uint   ; é o mesmo que uint++ em C
+    lds r25, uint+1
+    adiw r24, 1
+    sts uint, r24
+    sts uint+1, r25
+
+    rjmp start
