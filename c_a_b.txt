@@ -1,0 +1,12 @@
+.dseg
+.org sram_start
+    a: .byte 1
+    b: .byte 1
+    c: .byte 1
+ .cseg
+ start:
+    lds r16, a
+    lds r17, b
+    add r16, r17
+    sts c, r16
+    rjmp start
