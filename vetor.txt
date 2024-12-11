@@ -1,0 +1,75 @@
+; Declare três vetores com 12 posições de 8 bits (A1, A2 e A3)
+; e um vetor de 3 posições de 8 bits (A4).
+.DSEG
+.ORG SRAM_START
+    A1: .BYTE 12
+    A2: .BYTE 12
+    A3: .BYTE 12
+    A4: .BYTE 3
+    
+.CSEG
+start:
+    LDI YH, HIGH(A2)
+    LDI YL, LOW(A2)
+    LDI ZH, HIGH(A3)
+    LDI ZL, LOW(A3)
+    
+    LDI r16, 1
+; Inicialize os vetores A2 e A3 com os valores de 1 até 12.    
+init_a2_a3:
+    ST Y+, r16
+    ST Z+, r16
+    INC r16
+    CPI r16, 13
+    BRNE init_a2_a3
+    
+; Some a primeira posição do A2 com a última do A3 e armazene 
+; na primeira do A1. Faça isso sucessivamente até que todas as 
+; posições sejam operadas.
+    LDI YH, HIGH(A2)
+    LDI YL, LOW(A2)
+    LDI ZH, HIGH(A3+12)
+    LDI ZL, LOW(A3+12)
+    
+    LDI XH, HIGH(A1)
+    LDI XL, LOW(A1)
+    
+    LDI r16, 1
+
+sum_seq:
+    LD r17, Y+
+    LD r18, -Z
+    ADD r17, r18
+    ST X+, r17
+    INC r16
+    CPI r16, 13
+    BRNE sum_seq
+
+; Some A2(2) e A3(5), A2(3) e A3(4), A2(8) e A3(9) 
+; e salve consecutivamente no A4.
+; Deslocamento só funciona no Y e Z
+    LDI YH, HIGH(A2)
+    LDI YL, LOW(A2)
+    LDI ZH, HIGH(A3)
+    LDI ZL, LOW(A3)
+    
+    LDI XH, HIGH(A4)
+    LDI XL, LOW(A4)
+    
+sum_ale:
+    LDD r17, Y+2
+    LDD r18, Z+5
+    ADD r17, r18
+    ST X+, r17
+    
+    LDD r17, Y+3
+    LDD r18, Z+4
+    ADD r17, r18
+    ST X+, r17
+    
+    LDD r17, Y+8
+    LDD r18, Z+9
+    ADD r17, r18
+    ST X+, r17
+    
+rjmp start
