@@ -1,0 +1,59 @@
+.DSEG
+.ORG SRAM_START
+    a: .BYTE 4
+    b: .BYTE 4
+    c: .BYTE 4
+ 
+ .CSEG
+start:
+    LDI xh, high(a)
+    LDI xl, low(a)
+    LDI yh, high(b)
+    LDI yl, low(b)
+    LDI zh, high(c)
+    LDI zl, low(c)    
+    RCALL add_32bits
+
+add_32bits:
+    PUSH r0
+    IN r0, sreg
+    PUSH r0
+    PUSH r1
+    PUSH r2
+    PUSH r3
+    PUSH r4
+    PUSH r5
+    PUSH r6
+    PUSH r7
+    
+    LD r0, x+
+    LD r1, x+
+    LD r2, x+
+    LD r3, x
+    LD r4, y+
+    LD r5, y+
+    LD r6, y+
+    LD r7, y
+    
+    ADD r0, r4
+    ADC r1, r5
+    ADC r2, r6
+    ADC r3, r7
+    
+    ST z+, r0
+    ST z+, r1
+    ST z+, r2
+    ST z, r3
+
+    POP r0
+    OUT sreg, r0
+    POP r0
+    POP r1
+    POP r2
+    POP r3
+    POP r4
+    POP r5
+    POP r6
+    POP r7
+    
+    RET
