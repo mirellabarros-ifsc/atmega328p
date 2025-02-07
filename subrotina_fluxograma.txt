@@ -1,0 +1,17 @@
+.INCLUDE <m328Pdef.inc>
+
+
+muda_estado_led:
+    sbis gpior0, 7
+    rjmp liga
+    rjmp desliga
+
+liga:
+    sbi gpior0, 7
+    rjmp fim_muda_estado_led
+    
+desliga:
+    cbi gpior0, 7
+    
+fim_muda_estado_led:
+    ret
