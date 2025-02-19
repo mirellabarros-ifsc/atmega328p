@@ -1,0 +1,51 @@
+.equ aju = pb0
+.equ sel = pb1
+
+setup:
+    ; tem que usar o ddrd para os leds
+    ; configura os pinos dos leds como saída
+    ldi r16, 0xff
+    out ddrd, r16
+    
+    ; configurar os botões como entrada
+    cbi ddrb, aju
+    cbi ddrb, sel
+    ;...e ativar o pull-up
+    sbi portb, aju
+    sbi portb, sel
+    
+main:
+    ; usar o pinb para verificar se o botão foi apertado
+    sbic pinb, aju ; verificar se o botão ajuste foi pressionado
+    rjmp aju_npress
+    
+aju_press:
+    sbi portd, pd0
+    sbi portd, pd1
+    sbi portd, pd2
+    sbi portd, pd3
+    rjmp aju_fim
+aju_npress:
+    cbi portd, pd0
+    cbi portd, pd1
+    cbi portd, pd2
+    cbi portd, pd3
+    rjmp aju_fim
+aju_fim:
+    sbic pinb, sel ; verificar se o botão foi pressionado
+    rjmp sel_npress
+    
+sel_press:
+    sbi portd, pd4
+    sbi portd, pd5
+    sbi portd, pd6
+    sbi portd, pd7
+    rjmp sel_fim
+sel_npress:
+    cbi portd, pd4
+    cbi portd, pd5
+    cbi portd, pd6
+    cbi portd, pd7
+    rjmp sel_fim
+sel_fim:
+    rjmp main
